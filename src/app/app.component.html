@@ -1,0 +1,342 @@
+<div class="topnav" id="topnav" style="font-family: 'Montserrat';">
+  <a href="#">Covid 19-tracker</a>
+  <a href="https://doctorpatientportal.eu-gb.cf.appdomain.cloud " target="_blank">Doctor Patient Portal</a>
+  <a href="https://www.icmr.gov.in/" target="_blank" style="float: right;">ICMR</a>
+  <a href="https://www.who.int/emergencies/diseases/novel-coronavirus-2019" target="_blank" style="float: right;">World
+    Health Organization</a>
+  <a href="https://www.cdc.gov/coronavirus/2019-ncov/index.html" target="_blank" style="float: right;">CDC</a>
+</div>
+<div class="header">
+  <div class="row">
+    <div class="column">
+      <div class="card">
+        <select name="country" #myCountry (change)="selectedCountry(myCountry.value)">
+          <option *ngFor="let country of countries" [value]="country">{{country}}</option>
+        </select>
+      </div>
+    </div>
+    <div class="column">
+      <div class="card">
+        <h2>{{countryStatics["confirmed"]}}</h2>
+        <p>Confirmed</p>
+      </div>
+    </div>
+    <div class="column">
+      <div class="card">
+        <h2>{{countryStatics["recovered"]}}</h2>
+        <p>Recovered</p>
+      </div>
+    </div>
+    <div class="column">
+      <div class="card">
+        <h2>{{countryStatics["deaths"]}}</h2>
+        <p>Deaths</p>
+      </div>
+    </div>
+    <div class="column">
+      <div class="card">
+        <h2>{{countryStatics["recoveryRate"]}}</h2>
+        <p>Recovery rate</p>
+      </div>
+    </div>
+    <div class="column">
+      <div class="card">
+        <h2>{{countryStatics["deathRate"]}}</h2>
+        <p>Death rate</p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="headerNew">
+  <div class="rowNew">
+    <div class="columnNew" id="map" style="width: 100%;height: 450px;" class="match-parent"></div>
+  </div>
+</div>
+
+<div id="covidStatistics" class="topnav" style="font-family: 'Montserrat';">
+  <a href="#covidStatistics" style="font-weight: bold;font-size: 20px;border-radius: 10px;">Analysis for COVID-19 in
+    India</a>
+</div>
+
+<div class=" row">
+  <div class=" col-12">
+    <div class=" card">
+      <div class=" card-header">
+        <div class=" row">
+          <div class=" col-sm-12 text-left">
+            <h5 class=" card-category" style="color: aliceblue;">Confirmed vs Recovered vs Deceased</h5>
+            <h2 class=" card-title" style="color: aliceblue;">Daily Accretion</h2>
+          </div>
+        </div>
+      </div>
+      <div class=" card-body">
+        <div class=" chart-area"><canvas style="width: 100%;height: 250px;" id="chartLineDaily"> </canvas></div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class=" row">
+  <div class=" columnNew">
+    <div class=" card">
+      <div class=" card-header" style="padding: 10px;">
+        <div class=" row">
+          <div class=" col-sm-12 text-left">
+            <h5 class=" card-category" style="color: aliceblue;">Age Category</h5>
+            <h2 class=" card-title" style="color: aliceblue;">Confirmed Cases</h2>
+          </div>
+        </div>
+      </div>
+      <div class=" card-body">
+        <div class=" chart-area"><canvas style="height: 200px;" id="chartLineRed"> </canvas></div>
+      </div>
+    </div>
+  </div>
+  <div class=" columnNew">
+    <div class=" card card-chart">
+      <div class=" card-header" style="padding: 10px;">
+        <div class=" row">
+          <div class=" col-sm-12 text-left">
+            <h5 class=" card-category" style="color: aliceblue;">Weekly Categorization</h5>
+            <h2 class=" card-title" style="color: aliceblue;">Confirmed Cases</h2>
+          </div>
+        </div>
+        <div class=" card-body">
+          <div class=" chart-area"><canvas style="height: 200px;" id="CountryChart"> </canvas></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class=" columnNew">
+    <div class=" card card-chart">
+      <div class=" card-header" style="padding: 10px;">
+        <div class=" row">
+          <div class=" col-sm-12 text-left">
+            <h5 class=" card-category" style="color: aliceblue;">Weekly Categorization</h5>
+            <h2 class=" card-title" style="color: aliceblue;">Death vs Recovered</h2>
+          </div>
+        </div>
+        <div class=" card-body">
+          <div class=" chart-area"><canvas style="height: 200px;" id="chartLineGreen"> </canvas></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-8">
+    <div class="card" style="color: white;width: 95%;margin-left: 10px;margin-bottom: 100px;">
+      <table class="table ">
+        <thead>
+          <tr>
+            <th style="text-align: center;">State/UT</th>
+            <th>Confirmed</th>
+            <th>Active</th>
+            <th>Recovered</th>
+            <th>Deceased</th>
+          </tr>
+
+        </thead>
+        <tbody>
+          <tr *ngFor="let state of StateDataTableObject">
+            <td>{{state[1].state}}</td>
+            <td>{{state[1].confirmed}}</td>
+            <td>{{state[1].active}}</td>
+            <td>{{state[1].recovered}}</td>
+            <td>{{state[1].deaths}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="col-sm-4">
+    <div class=" card" style="height: 1485px;margin-right: 30px;margin-left: 5px;">
+      <a class="twitter-timeline" data-height="1455" data-theme="dark"
+        href="https://twitter.com/PIB_India?ref_src=twsrc%5Etfw">Tweets by
+        PIB_India</a>
+    </div>
+  </div>
+</div>
+<div class="row" style="background-color:#333 ;padding: 50px;">
+  <h4 style="color: white;margin-left: 42%;margin-bottom: 20px;font-family: 'Montserrat';">@Yoda Call for Code</h4>
+  <a href="#topnav" style="font-family: 'Montserrat';border: 1px black solid;color:white;background-color: black;padding: 10px;border-radius: 10px;margin-left: 45%;text-decoration: none;">Back To Top</a>
+
+</div>
+
+
+<!--Chatbot Part Do not touch-->
+<button class="open-button" id="open-button" (click)="openForm()"><span style="margin:auto;font-size: 40px;"><i
+      class="fas fa-comment-dots"></i></span></button>
+<section id="myForm" class="msger" style="font-family: 'Montserrat';">
+  <header class="msger-header">
+    <div class="msger-header-title">
+      <i class="fas fa-comment-alt"></i> Yoda
+    </div>
+    <div style="cursor: pointer;">
+      <span (click)="refresh()" style="margin-right: 20px;"><i class="fas fa-redo"></i></span>
+
+      <span (click)="cross()"><i class="fas fa-times"></i></span>
+    </div>
+    <!-- <button type="button" class="btn btn-primary"  (click)="refresh()" style="margin-right: 5px;">Home</button> -->
+  </header>
+
+  <main #scrollMe class="msger-chat">
+    <div *ngFor="let message of messages">
+      <div *ngIf="message.botType; else userMessage" class="msg left-msg">
+        <div *ngIf="message.endMessage; else normalMessage">
+          <div class="msg-img" style="background-image: url(https://image.flaticon.com/icons/svg/327/327779.svg)">
+          </div>
+
+          <div class="msg-bubble">
+            <div class="msg-info">
+              <div class="msg-info-name">{{message.user}}</div>
+              <div class="msg-info-time">{{message.time}}</div>
+            </div>
+
+            <div class="msg-text">
+              <img [src]="currentEndMessageUrl" style="width: 150px;height:80px;" /><br>
+              {{message.message}}
+            </div>
+            <ul class="list-group">
+              <a [href]="userPdfUrl" style="text-decoration: none;color:black" target="_blank">
+                <li class="list-group-item list-group-item-action"
+                  style="cursor: pointer;padding:5px;border-radius:10px">
+                  Download your session as PDF
+                </li>
+              </a>
+              <li (click)="sendEmailToUser()" class="list-group-item list-group-item-action"
+                style="cursor: pointer;padding:5px;border-radius:10px">
+                Send report to your email
+              </li>
+              <a href="https://doctorpatientportal.eu-gb.cf.appdomain.cloud" style="text-decoration: none;color:black"
+                target="_blank">
+                <li class="list-group-item list-group-item-action"
+                  style="cursor: pointer;padding:5px;border-radius:10px">
+                  Connect to a doctor
+                </li>
+              </a>
+              <li (click)="refresh()" class="list-group-item list-group-item-action"
+                style="cursor: pointer;padding:5px;border-radius:10px">
+                Return to Main Menu
+              </li>
+            </ul>
+          </div>
+        </div>
+        <ng-template #normalMessage>
+          <div *ngIf="message.checkbox;else listMessage">
+            <div class="msg-img" style="background-image: url(https://image.flaticon.com/icons/svg/327/327779.svg)">
+            </div>
+
+            <div class="msg-bubble">
+              <div class="msg-info">
+                <div class="msg-info-name">{{message.user}}</div>
+                <div class="msg-info-time">{{message.time}}</div>
+              </div>
+
+              <div class="msg-text">
+                {{message.message}}
+              </div>
+              <div class="form-check" *ngFor="let element of message.labelList">
+                <input class="form-check-input" id={{element.label}} name="{{ element.label }}" type="checkbox"
+                  id="{{element.label}}" (change)="onChangeCategory($event, element)">
+                <label class="form-check-label" for="{{element.label}}">
+                  {{element.label}}
+                </label>
+              </div>
+              <button type="button" [disabled]="btnEnabled" style="padding:2px;" (click)="callApi()">submit</button>
+              <!-- <ul style="list-style: none;">
+              <li *ngFor="let element of message.labelList" (click)="selectedOption($event,element)">
+                <p>{{element.label}}</p><br>
+              </li>
+            </ul> -->
+            </div>
+          </div>
+          <ng-template #listMessage>
+            <div class="msg-img" style="background-image: url(https://image.flaticon.com/icons/svg/327/327779.svg)">
+            </div>
+
+            <div class="msg-bubble">
+              <div class="msg-info">
+                <div class="msg-info-name">{{message.user}}</div>
+                <div class="msg-info-time">{{message.time}}</div>
+              </div>
+
+              <div class="msg-text">
+                {{message.message}}
+
+              </div>
+              <ul class="list-group">
+                <li class="list-group-item list-group-item-action"
+                  style="cursor: pointer;padding:5px;border-radius:10px" *ngFor="let element of message.labelList"
+                  (click)="selectedOption($event,element)">
+                  {{element.label}}
+                </li>
+              </ul>
+            </div>
+          </ng-template>
+        </ng-template>
+      </div>
+
+      <ng-template #userMessage>
+
+        <div *ngIf="message.image; else notImage" class="msg right-msg">
+          <div class="msg-img" style="background-image: url(https://image.flaticon.com/icons/svg/145/145867.svg)">
+          </div>
+
+          <div class="msg-bubble">
+            <div class="msg-info">
+              <div class="msg-info-name">{{message.user}}</div>
+              <div class="msg-info-time">{{message.time}}</div>
+            </div>
+
+            <div class="msg-text">
+              <img src={{message.message}} style="width: 150px;height:80px;" />
+            </div>
+            <ul class="list-group">
+              <li class="list-group-item list-group-item-action" style="cursor: pointer;padding:5px;border-radius:10px"
+                *ngFor="let element of message.labelList" (click)="selectedOption($event,element)">
+                {{element.label}}
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <ng-template #notImage>
+          <div class="msg right-msg">
+            <div class="msg-img" style="background-image: url(https://image.flaticon.com/icons/svg/145/145867.svg)">
+            </div>
+
+            <div class="msg-bubble">
+              <div class="msg-info">
+                <div class="msg-info-name">{{message.user}}</div>
+                <div class="msg-info-time">{{message.time}}</div>
+              </div>
+
+              <div class="msg-text">
+                {{message.message}}
+              </div>
+              <ul class="list-group">
+                <li class="list-group-item list-group-item-action"
+                  style="cursor: pointer;padding:5px;border-radius:10px" *ngFor="let element of message.labelList"
+                  (click)="selectedOption($event,element)">
+                  {{element.label}}
+                </li>
+              </ul>
+            </div>
+          </div>
+        </ng-template>
+      </ng-template>
+    </div>
+  </main>
+
+  <div class="msger-inputarea">
+    <label class="btn btn-dark" style="background-color: #333;color: aliceblue;">
+      Upload Image <input type="file" [disabled]="uploadBtnEnabled" style="display: none !important;"
+        (change)="onFileUpload($event)">
+    </label>
+
+    <input type="text" id="botInput" class="msger-input" placeholder="Enter your message..."
+      (keyup.enter)="textInput($event)">
+
+  </div>
+</section>
